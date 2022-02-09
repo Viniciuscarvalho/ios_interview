@@ -2,6 +2,8 @@
 
 O intuito deste repositório é montar um guia de perguntas mais comuns em entrevistas para vagas em iOS, onde é uma transcrição dos vídeos da [Harsivu Edu](https://www.youtube.com/channel/UCKIpdz6fS_CTemcqMrFhDwQ)
 
+A versão em PT-Br será a principal e teremos uma versão em EN-US também.
+
 ### Importante
 
 Alguns termos não são literalmente traduzidos pois não temos algo relativo em PT-BR ou não faria sentido ler de acordo com a linguagem.
@@ -21,6 +23,7 @@ Caso queira contribuir com alguma pergunta que viu em algum teste, seu PR será 
 7. [Optional in Swift](#optional-in-swift)
 8. [What is ??](#what-is-??)
 9. [Optional Chaining](#optional-chaining)
+10. [Optional Binding](#optional-binding)
 
 ## Copy vs Readonly
 
@@ -94,3 +97,28 @@ Nota: É importante que você use apenas referências sem dono quando você real
 - Readonly: Cria apenas getters;
 
 # ARC & Retain Cycle
+
+ARC é uma maneira que a Apple lida com o gerenciamento de memória para nós. Para cada objeto, ele mantém uma contagem de quantas referências fortes estão apontando para aquele objeto. E enquanto houver uma referência forte para um objeto, o objeto permanecerá na memória.
+
+# Optional in Swift
+
+Permite escrever código flexível e mais seguro;
+Ponto de interrogação significa que pode ser nulo ou algum valor
+
+# What is ??
+
+Para fornecer o valor padrão para uma variável que pode ser nula
+Ele diz ei, se não houver nada lá, use esse valor
+É semelhante a “!=nil”
+
+# Optional Chaining
+
+O encadeamento opcional é a maneira pela qual tentamos recuperar valores de uma cadeia de valores opcionais
+Permite que você falhe normalmente ao tentar acessar uma propriedade de um objeto que é nil
+
+ex: `let album = albumReleased(year: 2006)?.uppercased()`
+
+O encadeamento opcional pode ser tão longo quanto necessário
+
+# Optional Binding
+
