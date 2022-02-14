@@ -392,7 +392,7 @@ Uma animação está em execução, paralela a uma longa chamada de banco de dad
 # Codable & Decodable in Swift
 
 Torne seus tipos de dados codificáveis e decodificáveis para compatibilidade com representações externas, como JSON.
-O protocolo Coddle é o novo protocolo introduzido pela Apple no Swift 4 que pode fornecer o recurso embutido Encodable e Decodable. Isso tornará a análise de JSON mais fácil.
+O protocolo Codadle é o novo protocolo introduzido pela Apple no Swift 4 que pode fornecer o recurso embutido Encodable e Decodable. Isso tornará a análise de JSON mais fácil.
 
 ```
 Struct User: Codable {
