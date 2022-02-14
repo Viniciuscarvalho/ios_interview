@@ -30,6 +30,12 @@
 28. [What does a Dispatchgroup do?](#what-does-a-dispatchgroup-do?)
 29. [Codable & Decodable in Swift](#codable-&-decodable-in-swift)
 30. [Codable for complex JSON](#codable-for-complex-JSON)
+31. [Any vs AnyObject](#any-vs-anyobject)
+32. [Access Specifiers in Swift](#access-specifiers-in-swift)
+33. [Generics](#generics)
+34. [CoreData Stack](#coredata-stack)
+35. [Why use NSFetchedResultsController?](#why-use-nsfetcherresultscontroller?)
+36. [POP: Protocol Oriented Programming](#pop-protocol-oriented-programming)
 
 ## Copy vs Readonly
 
@@ -440,3 +446,79 @@ do {
     print(error)
 }
 ```
+
+# Any vs AnyObject
+
+Any pode representar uma instância de qualquer tipo, incluindo tipo de função e tipo opcional;
+AnyObject pode representar uma instância de qualquer tipo de classe.
+
+Ex:
+
+```
+Var anyArray: [Any] = [1,2, “Hello”, true]
+Var myPerson: AnyObject = Person()
+```
+
+# Access Specifiers in Swift
+
+Open e Public: pode ser acessado a partir das entidades do módulo e de qualquer entidade do módulo que importe o módulo definidor;
+
+Public: classes e membros de classe só podem ser subclassificados e substituídos dentro do módulo de definição (destino). 
+
+Open: classes e membros de classe podem ser subclassificados e sobrescrever dentro e fora do módulo de definição (destino). 
+
+Internal: só pode ser acessado a partir das entidades do módulo. É o nível de acesso padrão.
+
+Fileprivate e Private: só podem ser acessados em um escopo limitado onde você os define. 
+Fileprivate: restringe o uso da entidade em seu arquivo fonte de definição.
+Privado: restringe o uso da entidade à sua declaração anexa.
+
+# Generics
+
+O Generic permite escrever funções e tipos flexíveis e reutilizáveis que podem funcionar com qualquer tipo;
+Por exemplo, os tipos de array e dicionário do swift são coleções genéricas. Você pode criar um array que contenha valores Int, ou um array que contenha valores String, ou mesmo um array para qualquer outro tipo que possa ser criado no Swift. Da mesma forma, você pode criar um dicionário para armazenar valores de qualquer tipo especificado.
+
+Ex:
+```
+Func doNothing<Y>(x: T) {
+	return x
+}
+doNothing(x: “Hello”) // Hello
+doNothing(x: 123) // 123
+doNothing(x: true) // true
+```
+
+# CoreData Stack
+
+Managed Object - é uma classe ou subclasse NSManagedObject e representa um único registro de dados baseado no modelo;
+
+Managed Object Context - é como um espaço de trabalho que contém muitos objetos gerenciados. O aplicativo pode ter muitos objetos gerenciados. Com o MOC realizamos a operação CRUD;
+
+Managed Object Model - descreve a estrutura de dados e relacionamentos, definimos usando o editor de modelo de dados no Xcode. E este modelo é salvo como .xcdatamodelId;
+
+Persistent Store Coordinator: mediar entre o armazenamento persistente e o modelo e contexto de dados;
+
+ManagedObjectContext está em armazenamento persistente. O armazenamento persistente representa o arquivo real no disco com seus dados. Você pode ter vários armazenamentos persistentes. Para gerenciar o caso em que existem vários armazenamentos persistentes, existe um coordenador de armazenamento persistente;
+
+CoreData oferece três tipos de arquivos nativos para um armazenamento persistente: binário, XML e SQLite;
+
+Data Model - cria modelo de dados com entidade e atributos. Entidade é como classe ou tabela e atributos são como campos dessa classe ou tabela.
+
+
+# Why to use NSFetchedResultsController?
+
+Um controlador de resultados buscados gerencia os resultados de uma solicitação de busca. Ele notifica seu delegado sobre quaisquer alterações que afetem os resultados dessa solicitação de busca. Ele ainda oferece a capacidade de usar um cache na memória para melhorar o desempenho;
+
+Embora a classe NSFetchResultsController tenha sido projetada com visualizações de tabela em mente, ela também funciona muito bem com visualizações de coleção.
+
+# POP: Protocol Oriented Programming
+
+Desvantagens da programação orientada a objetos. 
+- Tem apenas uma herança. Se tivermos todas as hierarquias complicadas de herança, a classe inferior pode ter muitos estados desnecessários para manter. 
+- usa classe que é um tipo de referência. O tipo de referência pode tornar o código inseguro. Processando a coleção de tipos de referência enquanto eles estão sendo modificados. 
+
+Enquanto programação orientada a protocolos em Swift: 
+- Pode conformar múltiplos protocolos; 
+- Pode ser usado não apenas por classe, mas também por estruturas e enumerações; 
+- possui extensão de protocolo que nos dá funcionalidade comum a todos os tipos que estão em conformidade com um protocolo;
+- Prefere usar um tipo de valor em vez de um tipo de referência

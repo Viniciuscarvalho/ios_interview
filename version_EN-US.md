@@ -30,6 +30,12 @@
 28. [What does a Dispatchgroup do?](#what-does-a-dispatchgroup-do?)
 29. [Codable & Decodable in Swift](#codable-&-decodable-in-swift)
 30. [Codable for complex JSON](#codable-for-complex-JSON)
+31. [Any vs AnyObject](#any-vs-anyobject)
+32. [Access Specifiers in Swift](#access-specifiers-in-swift)
+33. [Generics](#generics)
+34. [CoreData Stack](#coredata-stack)
+35. [Why use NSFetchedResultsController?](#why-use-nsfetcherresultscontroller?)
+36. [POP: Protocol Oriented Programming](#pop-protocol-oriented-programming)
 
 ## Copy vs Readonly
 
@@ -435,3 +441,77 @@ do {
     print(error)
 }
 ```
+
+# Any vs AnyObject
+
+Any can represent an instance of any type at all including function type and optional type;
+AnyObject can represent an instance of any class type.
+
+Ex:
+```
+Var anyArray: [Any] = [1,2, “Hello”, true]
+Var myPerson: AnyObject = Person()
+```
+
+
+# Access Specifiers in Swift
+
+
+Open and Public: can be accessed from they module’s entities and any module’s entities that imports the defining module;
+
+Public: classes and class members can only be subclassed and override within the defining module (target).Open: classes and class members can be subclassed and override both within and outside the defining module (target).Internal: can only be accessed from they module’s entities. It is the default access level.
+
+Fileprivate and Private: can only be accessed in a limited scope where you define them.Fileprivate: restrict the use of entity in its defining source file.
+Private: restricts the use of entity to its enclosing declaration.
+
+
+# Generics
+
+Generic code enables you to write flexible, reusable functions and types that can work with any type;
+For example, swift’s array and dictionary types are both generic collections. You can create an array that holds Int values, or an array that holds String values, or indeed an array for any other type that can be created in Swift. Similarly, you can create a dictionary to store values of any specified type.
+
+Ex:
+```
+Func doNothing<Y>(x: T) {
+	return x
+}
+doNothing(x: “Hello”) // Hello
+doNothing(x: 123) // 123
+doNothing(x: true) // true
+```
+
+# Core Data Stack
+
+Managed Object - is NSManagedObject Class or subclass and represent a single data record based on model;
+
+Managed Object Context - is like workspace which contains many managed objects. App can have many managed objected. With MOC we perform CRUD operation;
+
+Managed Object Model - describes data structure and relationships, we define it using the data model editor in Xcode. And this model gets saved as .xcdatamodelId;
+
+Persistent Store coordinator: mediate between the persistent store and data model and context;
+
+ManagedObjectContext is in persistent store. Persistent store represent the actual file on disk with your data. You can have multiple persistent store. To manage the case where are multiple persistent store there is persistent store coordinator;
+
+CoreData offers three native file types for a persistent store: binary, XML, and SQLite;
+
+Data Model - create data model with entity and attributes. Entity is like class or table and attributes are like fields of that class or table.
+
+
+# Why to use NSFetchedResultsController?
+
+A fetched results controller manages the results of a fetch request. It notifies its delegate about any changes that affect the results of that fetch request. It even offers the ability to use an in-memory cache to improve perfomance;
+
+Even though the NSFetchResultsController class was designed with table views in mind, it also works great with collection views.
+
+
+# POP: Protocol Oriented Programming
+
+Drawbacks of objected oriented programming. 
+- It has only one inheritance. If we have every complicated hierarchy of inheritance, the bottom class may have a lot of unnecessary state to hold. 
+- it uses class which is a reference type. Reference type may cause code unsafe. Processing collection of reference types while they are being modified.
+
+While protocol oriented programming in Swift:
+- It can conform multiple protocols;
+- It can be used by not only class, but also structures and enumerations;
+- it has protocol extension which gives us common functionality to all types that conforms to a protocol;
+- It prefers to use a value type instead of reference type
