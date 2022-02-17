@@ -36,6 +36,15 @@
 34. [CoreData Stack](#coredata-stack)
 35. [Why use NSFetchedResultsController?](#why-use-nsfetcherresultscontroller?)
 36. [POP: Protocol Oriented Programming](#pop-protocol-oriented-programming)
+37. [KVC & KVO](#kvc-&-kvo)
+38. [Push Notification](#push-notification)
+39. [Content Hugging & Compression resistance](#content-hugging-&-compression-resistance)
+40. [Singleton](#singleton)
+41. [Why Singleton is bad?](#why-singleton-is-bad?)
+42. [Dependency Injection](#dependency-injection)
+43. [What is ABI?](#what-is-ABI?)
+44. [What is viewDidLayoutSubviews?](#what-is-viewDidLayoutSubviews?)
+45. [What is loadView?](#what-is-loadView?)
 
 ## Copy vs Readonly
 
@@ -515,3 +524,67 @@ While protocol oriented programming in Swift:
 - It can be used by not only class, but also structures and enumerations;
 - it has protocol extension which gives us common functionality to all types that conforms to a protocol;
 - It prefers to use a value type instead of reference type
+
+# KVC & KVO
+
+KVC: Adds stands for key-value coding. It’s a mechanism by which an object’s properties can be accessed using string’s at runtime rather than having to statically know the property names at development time.
+
+KVO: stands for key-value observing and allows a controller or class to observe changes to a property value. In KVO, an object can ask to be notified of any changes to a specific property, whenever that property changes value, the observer is automatically notified. You can use KVO in Swift, but only for dynamic properties of NSObject subclass.
+
+Ex: KVC: `let robertLastName = self.value(forKey: “lastName”)`
+
+KVO:
+```
+@objc class Person: NSObject {
+	@objc dynamic var name = “Taylor Swift” 
+}
+
+Let taylor = Person()
+
+Taylor.observe(\Person.name, options: .new) { person, change in 
+	print(“I’m now called \(person.name)”)
+}
+```
+
+# Push Notification
+
+DEVICE -> APP -> SERVER -> APNS
+
+1. Register for push notification
+2. Send request to APNS
+3. Reply with Device Token
+4. Device sends token to App
+5. Sends Device token to Server
+6. Server ends notification payload with device token to APNS
+7. Sends Notification to Device 
+
+So the checklist of APNS:
+- Create appId allowed with push notification
+- Create SSL certificate with valid certificate and app ID
+- Create Provisioning profile with same certificate and make sure to add device in case of sandboxing (development provisioning)
+
+# Content Hugging & Compression resistance
+
+Hugging - content doesn’t want to grow
+Compession Resistance - Content doesn’t want to shrink
+
+# Singleton
+
+The singleton pattern is a very useful pattern. There are times that you want to make sure only one instance of a class is instantiated and that your application only uses that instance. That’s the primary and only goal of the singleton pattern. Singleton objects can be access globally
+
+If you’ve worked with Apple’s frameworks, then chances are that you’ve already used the Singleton pattern.
+
+Ex:
+```
+Let sharedURLSession = URLSession.shared
+Let standardUserDefaults = UserDefaults.Standard
+
+Class LocationManager {
+	static let shared = LocationManager()
+	var locationGranted: Bool?	// Initializer access level change now private init() {}	func requestForLocation() {
+		locationGranted = true
+		print(“Location granted”)
+	}
+}// Access class function in a single line
+LocationManager.shared.requestForLocation()
+```
