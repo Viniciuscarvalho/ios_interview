@@ -609,7 +609,7 @@ Desvantagens de usar Singleton:
 
 # Dependency Injection
 
-A cura para resolver a doença singleton é a injeção de dependência. Embora a principal vantagem do padrão singleton seja a conveniência, a vantagem mais importante da injeção de dependência é a transparência.
+A cura para resolver o singleton é a injeção de dependência. Embora a principal vantagem do padrão singleton seja a conveniência, a vantagem mais importante da injeção de dependência é a transparência.
 Se um objeto requer um objeto de usuário válido para fazer seu trabalho, esse objeto de usuário deve ser injetado como uma dependência.
 
 Ex:
