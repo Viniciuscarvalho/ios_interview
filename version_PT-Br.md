@@ -597,3 +597,48 @@ Class LocationManager {
 // Access class function in a single line
 LocationManager.shared.requestForLocation()
 ```
+
+# Why Singleton is bad?
+
+O padrão singleton tem um efeito colateral que geralmente é o verdadeiro motivo para adotar o padrão singleton, o acesso global. Muitos desenvolvedores usam o padrão singleton para ter acesso fácil ao objeto singleton de qualquer lugar em seu projeto. Embora isso seja conveniente, essa conveniência tem um preço.
+
+Desvantagens de usar Singleton:
+- Sacrificar a transparência por conveniência: Ao usar singletons, você quase sempre sacrifica a transparência por conveniência. Como os singletons são tão convenientes e fáceis de acessar - usá-los extensivamente geralmente leva a uma manutenção muito difícil do "código espaguete" que não possui separações claras entre os objetos.
+- Eles são um estado compartilhado mutável global: seu estado é compartilhado automaticamente em todo o aplicativo, e os bugs podem começar a ocorrer quando esse estado muda inesperadamente.
+- Gerenciar seu ciclo de vida pode ser complicado: como os singletons estão ativos durante toda a vida útil de um aplicativo, gerenciá-los pode ser muito difícil e eles geralmente precisam contar com opcionais para acompanhar os valores.
+
+# Dependency Injection
+
+A cura para resolver a doença singleton é a injeção de dependência. Embora a principal vantagem do padrão singleton seja a conveniência, a vantagem mais importante da injeção de dependência é a transparência.
+Se um objeto requer um objeto de usuário válido para fazer seu trabalho, esse objeto de usuário deve ser injetado como uma dependência.
+
+Ex:
+
+```
+Class User {
+	var firstName = “”
+	var lastName = “”
+}
+
+Class NetworkController {
+	let user: User
+	init (user: user) {
+		self.user = user
+	}
+}
+```
+
+# What is ABI?
+
+As ABIs são importantes quando se trata de aplicativos que usam bibliotecas externas. Se um programa for criado para usar uma biblioteca específica e essa biblioteca for atualizada posteriormente, você não precisará recompilar esse aplicativo (e do ponto de vista do usuário final, talvez você não tenha o código-fonte). Se a biblioteca atualizada usar a mesma ABI, seu programa não precisará ser alterado.
+
+# What is viewDidLayoutSubviews?
+
+viewDidLayoutSubviews é chamado para notificar o controlador de visualização de que sua visualização acabou de apresentar suas subvisualizações.
+Em outras palavras, viewDidLayoutSubviews é chamado toda vez que a exibição é atualizada, girada ou alterada ou seus limites são alterados. A palavra-chave aqui é mudança de limites.
+
+# What is a loadView?
+
+Apenas substitua este método se você criar suas visualizações manualmente (ou seja, NÃO storyboard). loadView() cria e instancia o UIView.
+
+viewDidLoad() é chamado quando a visualização termina de carregar, enquanto loadView() é chamado quando a visualização começa a ser carregada.

@@ -588,3 +588,47 @@ Class LocationManager {
 }// Access class function in a single line
 LocationManager.shared.requestForLocation()
 ```
+
+# Why Singleton is bad?
+
+Singleton pattern has a side effect that’s often the true reason for adopting the singleton pattern, global access. Many developers use the singleton pattern to have easy access to the singleton object from anywhere in their project. While this is convenient, that convenience comes at a price.
+
+Drawbacks of using Singleton:
+- Sacrifing transparency for convenience: By using singletons, you almost always sacrifice transparency for convenience. Since singletons are so convenient and easy to access - using them extensively usually leads to very hard to maintain “Spaghetti code” that doesn’t have clear separations between objects.
+- They are global mutable shared state: Their state is automatically shared across the entire app, and bugs can often start occurring when that state changes unexpectedly.
+- Managing their lifecycle can be tricky: Since singletons are alive during the entire lifespan of an application, managing them chan be really hard, and they usually have to rely on optionals to keep track of values.
+
+# Dependency Injection
+
+The cure to solve singleton disease is dependency injection. While a key advantage of the singleton pattern is convenience, the most important advantage of dependency injection is transparency.
+If an object requires a valid user object to do its job, then that user object should be injected as a dependency.
+
+Ex:
+```
+Class User {
+	var firstName = “”
+	var lastName = “”
+}
+
+Class NetworkController {
+	let user: User
+	init (user: user) {
+		self.user = user
+	}
+}
+```
+
+# What is ABI?
+
+ABIs are important when it comes to applications that use external libraries. If a program is built to use a particular library and that library is later updated, you don’t want to have to re-compile that application (and from the end-user’s standpoint, you may not have the source). If the updated library uses the same ABI, then your program will not need to change.
+
+# What is viewDidLayoutSubviews?
+
+viewDidLayoutSubviews is called to notify the view controller that its view has just laid out its subviews.
+In another word, viewDidLayoutSubviews is called every time the view is updated, rotated or changed or its bounds change. The keyword here is bounds change.
+
+# What is loadView?
+
+Only override this method if you create your views manually (i.e NOT storyboard). loadView() creates and instantiates the UIView.
+
+viewDidLoad() is called when the view has finished loading, while loadView() is called when the view starts loading.
