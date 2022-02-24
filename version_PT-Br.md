@@ -1,5 +1,7 @@
 ## Questões 
 
+## Questões 
+
 1. [Copy vs Readonly](#copy-vs-readonly)
 2. [Copy vs Strong](#copy-vs-strong)
 3. [Weak vs Strong](#weak-vs-strong)
@@ -137,7 +139,10 @@ Ele diz ei, se não houver nada lá, use esse valor
 O encadeamento opcional é a maneira pela qual tentamos recuperar valores de uma cadeia de valores opcionais
 Permite que você falhe normalmente ao tentar acessar uma propriedade de um objeto que é nil
 
-ex: `let album = albumReleased(year: 2006)?.uppercased()`
+ex: 
+```swift 
+let album = albumReleased(year: 2006)?.uppercased() 
+```
 
 O encadeamento opcional pode ser tão longo quanto necessário
 
@@ -147,7 +152,7 @@ Além do desempacotamento forçado, a vinculação opcional é uma maneira simpl
 
 ex: 
 
-```
+``` swift
 if let constantName = someOptional {
    statements
 }
@@ -165,16 +170,16 @@ Struct: tipo de valor, significa que as alterações em um valor não afetarão 
 
 ex:
 
-```
+```swift
 class SomeClass {
-	var name: String
+	var name: 
 		init(name: String) {
 			self.name = name
 		}
 }
 
-Var aClass = SomeClass(name: “”Bob)
-Var bClass = aClass // aClass and bClass now reference the same instance!
+var aClass = SomeClass(name: “”Bob)
+var bClass = aClass // aClass and bClass now reference the same instance!
 bClass.name = “Sue”
 print(aClass.name) //“Sue” print(bClass.name) //“Sue”
 ```
@@ -200,7 +205,7 @@ Grupo de valores relacionados
 
 Raw = valores definidos no Enum
 
-```
+```swift
 Enum Directions: Int {
   case up = 1
 	case down
@@ -211,8 +216,8 @@ Enum Directions: Int {
 
 Associated = Passagem de parametrôs pelo o Enum
 
-```
-Enum ExampleAssociation {
+```swift
+enum ExampleAssociation {
 	case name(String)
 }
 ```
@@ -227,8 +232,8 @@ A instrução Defer é usada para executar um trecho de código exatamente antes
 A instrução defer é executada após o retorno!
 A instrução defer é executada independentemente de como você sai
 
-```
-Func deferEx() {	
+``` swift
+func deferEx() {	
   print(“”beginning)	
   var value: String?	
   defer {		
@@ -272,14 +277,14 @@ Closures são blocos autocontidos de funcionalidade que podem ser passados e usa
 Os fechamentos são funções sem cabeça. Closures são funções sem a palavra-chave func e o nome da função. Eles também são conhecidos como funções anônimas.
 
 Syntax -
-```
+```swift
 { (parameter) -> return type in
 	statement 
 }
 ```
 
 ex:
-```
+```swift
 var sayHello = {(name: String) -> String in
 	return “Hello \(name)” 
 }
@@ -339,8 +344,8 @@ Operation e OperationQueue são construídos sobre o GCD. Como regra geral, a ap
 Operation é uma classe abstrata, projetada para subclasses. Cada subclasse representa uma tarefa específica.
 Main() é o método que você substitui nas subclasses de Operação para realmente realizar o trabalho.
 
-```
-Class imageDownloader: Operation {
+```swift
+class imageDownloader: Operation {
 	let photoRecord: PhotoRecord
 	init (_ photoRecord: PhotoRecord) {
 		self.photoRecord = photoRecord	
@@ -360,7 +365,7 @@ Uma fila que regula a execução das operações;
 Uma fila de operação executa seus objetos de operação enfileirados com base em sua prioridade e prontidão. Depois de ser adicionada a uma fila de operações, uma operação permanece em sua fila até relatar que terminou com sua tarefa; 
 O OperationQueue é particularmente poderoso porque permite controlar com precisão quantas operações simultâneas podem ser executadas e qual qualidade de serviço você precisa, além de permitir que você agende o trabalho usando encerramentos. Você pode até pedir à fila de operações que espere até que todas as suas operações sejam concluídas, o que facilita o agendamento.
 
-```
+```swift
 let queue = OperationQueue()
 	for image in images {
 		queue.addOperation {
@@ -387,7 +392,7 @@ List of priority:
 - .background
 - .unspecified
 
-```
+```swift
 DispatchQueue.global(cos: .background).async {
 	// Call your background task
 	DispatchQueue.main.async {
@@ -409,8 +414,8 @@ Uma animação está em execução, paralela a uma longa chamada de banco de dad
 Torne seus tipos de dados codificáveis e decodificáveis para compatibilidade com representações externas, como JSON.
 O protocolo Codadle é o novo protocolo introduzido pela Apple no Swift 4 que pode fornecer o recurso embutido Encodable e Decodable. Isso tornará a análise de JSON mais fácil.
 
-```
-Struct User: Codable {
+```swift
+struct User: Codable {
 	var userId: Int
 	var id: Int
 	var title: String
@@ -427,7 +432,7 @@ do {
 
 # Codable for complex JSON
 
-```
+```swift
 Let jsonDataString = “” {
     	“status”: “success”,	
         “statusCode”: 123,	
@@ -463,9 +468,9 @@ AnyObject pode representar uma instância de qualquer tipo de classe.
 
 Ex:
 
-```
-Var anyArray: [Any] = [1,2, “Hello”, true]
-Var myPerson: AnyObject = Person()
+```swift
+var anyArray: [Any] = [1,2, “Hello”, true]
+var myPerson: AnyObject = Person()
 ```
 
 # Access Specifiers in Swift
@@ -485,11 +490,11 @@ Privado: restringe o uso da entidade à sua declaração anexa.
 # Generics
 
 O Generic permite escrever funções e tipos flexíveis e reutilizáveis que podem funcionar com qualquer tipo;
-Por exemplo, os tipos de array e dicionário do swift são coleções genéricas. Você pode criar um array que contenha valores Int, ou um array que contenha valores String, ou mesmo um array para qualquer outro tipo que possa ser criado no Swift. Da mesma forma, você pode criar um dicionário para armazenar valores de qualquer tipo especificado.
+Por exemplo, os tipos de array e dicionário do swift são coleções genéricas. Você pode criar um array que contenha valores Int, ou um array que contenha valores `String`, ou mesmo um array para qualquer outro tipo que possa ser criado no Swift. Da mesma forma, você pode criar um dicionário para armazenar valores de qualquer tipo especificado.
 
 Ex:
-```
-Func doNothing<Y>(x: T) {
+```swift
+func doNothing<Y>(x: T) {
 	return x
 }
 doNothing(x: “Hello”) // Hello
@@ -499,22 +504,22 @@ doNothing(x: true) // true
 
 # CoreData Stack
 
-Managed Object - é uma classe ou subclasse NSManagedObject e representa um único registro de dados baseado no modelo;
+Managed Object - é uma classe ou subclasse `NSManagedObject` e representa um único registro de dados baseado no modelo;
 
 Managed Object Context - é como um espaço de trabalho que contém muitos objetos gerenciados. O aplicativo pode ter muitos objetos gerenciados. Com o MOC realizamos a operação CRUD;
 
-Managed Object Model - descreve a estrutura de dados e relacionamentos, definimos usando o editor de modelo de dados no Xcode. E este modelo é salvo como .xcdatamodelId;
+Managed Object Model - descreve a estrutura de dados e relacionamentos, definimos usando o editor de modelo de dados no Xcode. E este modelo é salvo como `.xcdatamodelId`;
 
 Persistent Store Coordinator: mediar entre o armazenamento persistente e o modelo e contexto de dados;
 
-ManagedObjectContext está em armazenamento persistente. O armazenamento persistente representa o arquivo real no disco com seus dados. Você pode ter vários armazenamentos persistentes. Para gerenciar o caso em que existem vários armazenamentos persistentes, existe um coordenador de armazenamento persistente;
+`ManagedObjectContext` está em armazenamento persistente. O armazenamento persistente representa o arquivo real no disco com seus dados. Você pode ter vários armazenamentos persistentes. Para gerenciar o caso em que existem vários armazenamentos persistentes, existe um coordenador de armazenamento persistente;
 
 CoreData oferece três tipos de arquivos nativos para um armazenamento persistente: binário, XML e SQLite;
 
 Data Model - cria modelo de dados com entidade e atributos. Entidade é como classe ou tabela e atributos são como campos dessa classe ou tabela.
 
 
-# Why to use NSFetchedResultsController?
+# Why to use `NSFetchedResultsController`?
 
 Um controlador de resultados buscados gerencia os resultados de uma solicitação de busca. Ele notifica seu delegado sobre quaisquer alterações que afetem os resultados dessa solicitação de busca. Ele ainda oferece a capacidade de usar um cache na memória para melhorar o desempenho;
 
@@ -539,10 +544,10 @@ KVC: Adiciona significa codificação de valor-chave. É um mecanismo pelo qual 
 KVO: significa observação de valor-chave e permite que um controlador ou classe observe alterações em um valor de propriedade. No KVO, um objeto pode pedir para ser notificado de alguma propriedade específica, sempre que essa propriedade mudar de valor, o observador é automaticamente notificado das mudanças. Você pode usar KVO em Swift, mas apenas para propriedades dinâmicas da subclasse NSObject.
 
 Ex:
-KVC: `let robertLastName = self.value(forKey: “lastName”)`
+KVC: ```swift let robertLastName = self.value(forKey: “lastName”) ```
 
 KVO:
-```
+```swift
 @objc class Person: NSObject {
 	@objc dynamic var name = “Taylor Swift” 
 }
@@ -582,11 +587,11 @@ O padrão singleton é um padrão muito útil. Há momentos em que você deseja 
 Se você já trabalhou com os frameworks da Apple, é provável que já tenha usado o padrão Singleton.
 
 Ex:
-```
-Let sharedURLSession = URLSession.shared
-Let standardUserDefaults = UserDefaults.Standard
+```swift
+let sharedURLSession = URLSession.shared
+let standardUserDefaults = UserDefaults.Standard
 
-Class LocationManager {
+class LocationManager {
 	static let shared = LocationManager()
 	var locationGranted: Bool?	// Initializer access level change now private init() {}
 		func requestForLocation() {
@@ -614,13 +619,13 @@ Se um objeto requer um objeto de usuário válido para fazer seu trabalho, esse 
 
 Ex:
 
-```
-Class User {
+```swift
+class User {
 	var firstName = “”
 	var lastName = “”
 }
 
-Class NetworkController {
+class NetworkController {
 	let user: User
 	init (user: user) {
 		self.user = user
@@ -634,11 +639,11 @@ As ABIs são importantes quando se trata de aplicativos que usam bibliotecas ext
 
 # What is viewDidLayoutSubviews?
 
-viewDidLayoutSubviews é chamado para notificar o controlador de visualização de que sua visualização acabou de apresentar suas subvisualizações.
+`viewDidLayoutSubviews` é chamado para notificar o controlador de visualização de que sua visualização acabou de apresentar suas subvisualizações.
 Em outras palavras, viewDidLayoutSubviews é chamado toda vez que a exibição é atualizada, girada ou alterada ou seus limites são alterados. A palavra-chave aqui é mudança de limites.
 
 # What is a loadView?
 
 Apenas substitua este método se você criar suas visualizações manualmente (ou seja, NÃO storyboard). loadView() cria e instancia o UIView.
 
-viewDidLoad() é chamado quando a visualização termina de carregar, enquanto loadView() é chamado quando a visualização começa a ser carregada.
+`viewDidLoad()` é chamado quando a visualização termina de carregar, enquanto loadView() é chamado quando a visualização começa a ser carregada.
