@@ -45,6 +45,15 @@
 43. [What is ABI?](#what-is-ABI?)
 44. [What is viewDidLayoutSubviews?](#what-is-viewDidLayoutSubviews?)
 45. [What is loadView?](#what-is-loadView?)
+46. [NSArray vs Array](#nsarray-vs-array)
+47. [NSDictionary vs Dictionary](#nsdictionary-vs-dictionary)
+48. [Computted and stored properties](#computed-and-stored-properties)
+49. [Property Observer for computed properties](#property-observer-for-computed-properties)
+50. [Can we use computed or stored properties in extension?](#can-we-use-computed-or-stored-properties-in-extension?)
+51. [Can we write extension for struct/enum/protocol?](#can-we-write-extension-for-struct-enum-protocol?)
+52. [Is Optional an Enum?](#is-optional-an-enum?)
+53. [Sync vs Async: deadlock situation](#sync-vs-async-deadlock-situation)
+54. [Example of Strong & Weak](#example-of-strong-weak)
 
 ## Copy vs Readonly
 
@@ -642,3 +651,142 @@ Em outras palavras, viewDidLayoutSubviews é chamado toda vez que a exibição �
 Apenas substitua este método se você criar suas visualizações manualmente (ou seja, NÃO storyboard). loadView() cria e instancia o UIView.
 
 viewDidLoad() é chamado quando a visualização termina de carregar, enquanto loadView() é chamado quando a visualização começa a ser carregada.
+
+# What is viewDidLayoutSubviews?
+
+`viewDidLayoutSubviews` é chamado para notificar o controlador de visualização de que sua visualização acabou de apresentar suas subvisualizações.
+Em outras palavras, `viewDidLayoutSubviews` é chamado toda vez que a exibição é atualizada, girada ou alterada ou seus limites são alterados. A palavra-chave aqui é mudança de limites.
+
+# What is loadView?
+
+Apenas substitua este método se você criar suas visualizações manualmente (ou seja, NÃO storyboard). loadView() cria e instancia o UIView.
+
+`viewDidLoad()` é chamado quando a visualização termina de carregar, enquanto `loadView()` é chamado quando a visualização começa a ser carregada.
+
+# NSArray vs Array
+
+Array é uma struct, portanto, é um tipo de valor em Swift. NSArray é uma classe Objective C imutável, portanto, é um tipo de referência em Swift e está ligado a Array<AnyObject>. NSMutableArray é a subclasse mutável de NSArray.
+
+# NSDictionary vs Dictionary
+
+Dicionário é uma estrutura nativa do Swift. NSDictionary é uma classe de cacau. Eles são ligados a outro (dentro dos limites usuais), como os documentos explicam de forma muito clara e completa.
+
+# Computed and Stored Properties
+
+- Propriedade Armazenada
+1. Armazene valores constantes e variáveis como instância
+2. Fornecido por classes e estruturas
+
+- Propriedade computada
+1. Calcular um valor em vez de armazenar o valor, declarações 'let' não podem ser propriedades computadas
+2. Fornecido por classes, enumerações, estruturas e extensões
+
+# Property Observer for computed properties
+
+Cada vez que os valores de propriedade são definidos, observadores de propriedade são chamados;
+Antes de armazenar o valor - willSet
+Depois de armazenar o novo valor - didSet
+Quando uma propriedade é definida em um inicializador, os observadores willSet e didSet não podem ser chamados.
+
+Ex:
+
+```
+class PropertyObserverEx {
+	var counter: Int = 0 {
+		willSet(newTotal) {
+			print(“Total Counter is :\(newTotal)”)
+		}
+		
+		didSet {
+			if counter > oldValue {
+				print(“Newly added counter \(counter - oldValue)”)
+			}
+		}
+	}
+}
+
+let newCounter = PropertyObserverEx()
+newCounter.counter = 10
+newCounter.counter = 60
+
+Response -
+ Total Counter is: 10
+Newly Added Counter 10
+Total Counter is: 60
+Newly Added Counter 50
+```
+
+# Can we use computed or stored properties in extension?
+
+Podemos usar propriedades computadas com extensão, mas propriedades armazenadas.
+
+# Can we write extension for struct/enum/protocol?
+
+Sim, podemos escrever extensão para todos eles.
+
+# Is Optional an Enum?
+
+Sim, basicamente, um Optional é um Enum com 2 casos e um dos casos tem um valor associado a ele.
+- .Some (Wrapped)
+- .None
+
+# Sync vs Async: deadlock situation
+
+Quando você invoca algo de forma síncrona, significa que o thread que iniciou essa operação aguardará a conclusão da tarefa antes de continuar. Assíncrono significa que não vai esperar.
+
+O objetivo é liberar o thread principal para que ele possa continuar respondendo à interface do usuário (em vez de congelar)
+
+Há duas partes nisso:
+- Pegue uma fila em segundo plano (ex: CGD)
+- Despache sua tarefa para essa fila de forma síncrona / assíncrona
+
+Sync Async:  Deadlock Situation 
+```
+let  queue = DispatchQueue(label: “label”)
+queue.async { 	queue.sync {
+		// outer block is waiting for this inner block to complete, 		// inner block won’t start before outer block finishes 		// => deadlock	
+	} 	// this will never be reached }
+```
+
+queue.sync {
+	queue.sync {
+		// outer block is waiting for this inner block to complete,
+		// inner block won’t start before outer block finishes
+	}
+}
+
+Sync Async: No Deadlock
+
+```
+queue.sync {	
+	queue.async {
+		// outer block is waiting for this inner block to complete, 		
+		// inner block won’t start before outer block finishes 		
+		// => deadlock	
+	}
+		// this will never be reached
+	}
+```
+
+queue.async {
+	queue.async {
+		// outer block is waiting for this inner block to complete,
+		// inner block won’t start before outer block finishes
+		// => deadlock
+	}
+	// this will never be reached
+}
+```
+
+# Example of Strong & Weak?
+
+- Use of Weak:
+
+1. Delegates
+2. Outlets
+3. Subviews
+4. Controls
+
+- Use of Strong:
+
+1. Remaining everywhere which is not included in Weak

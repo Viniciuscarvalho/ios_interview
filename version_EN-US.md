@@ -45,6 +45,15 @@
 43. [What is ABI?](#what-is-ABI?)
 44. [What is viewDidLayoutSubviews?](#what-is-viewDidLayoutSubviews?)
 45. [What is loadView?](#what-is-loadView?)
+46. [NSArray vs Array](#nsarray-vs-array)
+47. [NSDictionary vs Dictionary](#nsdictionary-vs-dictionary)
+48. [Computted and stored properties](#computed-and-stored-properties)
+49. [Property Observer for computed properties](#property-observer-for-computed-properties)
+50. [Can we use computed or stored properties in extension?](#can-we-use-computed-or-stored-properties-in-extension?)
+51. [Can we write extension for struct/enum/protocol?](#can-we-write-extension-for-struct-enum-protocol?)
+52. [Is Optional an Enum?](#is-optional-an-enum?)
+53. [Sync vs Async: deadlock situation](#sync-vs-async-deadlock-situation)
+54. [Example of Strong & Weak](#example-of-strong-weak)
 
 ## Copy vs Readonly
 
@@ -632,3 +641,136 @@ In another word, viewDidLayoutSubviews is called every time the view is updated,
 Only override this method if you create your views manually (i.e NOT storyboard). loadView() creates and instantiates the UIView.
 
 viewDidLoad() is called when the view has finished loading, while loadView() is called when the view starts loading.
+
+# NSArray vs Array
+
+Array is a struct, therefore it is a value type in Swift. NSArray is an immutable Objective C class, therefore it is a reference type in Swift and it is bridged to Array<AnyObject>. NSMutableArray is the mutable subclass of NSArray.
+
+# NSDictionary vs Dictionary
+
+Dictionary is a native Swift struct. NSDictionary is a Cocoa class. They are bridged to on another (within the usual limits), as the docs explain very clearly and fully.
+
+# Computed and Stored Properties
+
+- Stored Property
+1. Store constant and variable values as instance
+2. Provided by classes and structures
+
+- Computed Property
+1. Calculate a value rather than storing the value, ‘let’ declarations cannot be computed properties
+2. Provided by classes, enumerations, structures and extensions
+
+
+# Property Observer for computed properties
+
+Each and every time when property values are set property observers called;
+Before Storing the value - willSet
+After Storing the new value - didSet
+When a property is set in an initializer willSet and didSet observers cannot be called.
+
+Ex:
+```
+class PropertyObserverEx {
+	var counter: Int = 0 {
+		willSet(newTotal) {
+			print(“Total Counter is :\(newTotal)”)
+		}
+		
+		didSet {
+			if counter > oldValue {
+				print(“Newly added counter \(counter - oldValue)”)
+			}
+		}
+	}
+}
+
+let newCounter = PropertyObserverEx()
+newCounter.counter = 10
+newCounter.counter = 60
+
+Response - Total Counter is: 10
+Newly Added Counter 10
+Total Counter is: 60
+Newly Added Counter 50
+```
+
+# Can we use computed or stored properties in extension?
+
+We can use Computed properties with extension but stored properties
+
+# Can we write extension for struct/enum/protocol?
+
+Yes, we can write extension for all of them
+
+# Is Optional an Enum?
+
+Yes, basically, an Optional is an Enum with 2 cases and on of the cases has an associated value attached to it.
+- .Some(Wrapped)
+- .None
+
+# Sync vs Async: deadlock situation
+
+When you invoke something synchronously, it means that the thread that initiated that operation will wait for the task to finish before continuing. Asynchronous means that it will not wait.
+
+The goal is to free the main thread so that it can continue to respond to the user interface (rather than freezing)
+
+There are two part in that:
+- Grab a background queue (ex: CGD)
+- Dispatch your task to that queue synchronously / asynchronously
+
+
+Sync Async:  Deadlock Situation 
+```
+let  queue = DispatchQueue(label: “label”)
+queue.async {
+		queue.sync {
+		// outer block is waiting for this inner block to complete,
+				// inner block won’t start before outer block finishes
+						// => deadlock	
+	}
+		// this will never be reached
+}
+```
+
+queue.sync {
+	queue.sync {
+		// outer block is waiting for this inner block to complete,
+		// inner block won’t start before outer block finishes
+	}
+}
+
+Sync Async: No Deadlock
+
+```
+queue.sync {
+		queue.async {
+		// outer block is waiting for this inner block to complete,
+				// inner block won’t start before outer block finishes
+						// => deadlock	
+	}
+		// this will never be reached
+		}
+```
+
+queue.async {
+	queue.async {
+		// outer block is waiting for this inner block to complete,
+		// inner block won’t start before outer block finishes
+		// => deadlock
+	}
+	// this will never be reached
+}
+```
+
+# Example of Strong & Weak
+
+- Use of Weak:
+
+1. Delegates
+2. Outlets
+3. Subviews
+4. Controls
+
+- Use of Strong:
+
+1. Remaining everywhere which is not included in Weak
