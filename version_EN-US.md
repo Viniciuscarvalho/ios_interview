@@ -345,7 +345,7 @@ Operation is an abstract class, designed for sub-classing. Each subclass represe
 Main() is the method you override in Operation subclasses to actually perform work.
 
 ```
-Class imageDownloader: Operation {
+Class ImageDownloader: Operation {
 	let photoRecord: PhotoRecord
 	init (_ photoRecord: PhotoRecord) {
 		self.photoRecord = photoRecord	
