@@ -354,7 +354,7 @@ Operation é uma classe abstrata, projetada para subclasses. Cada subclasse repr
 Main() é o método que você substitui nas subclasses de Operação para realmente realizar o trabalho.
 
 ```swift
-class imageDownloader: Operation {
+class ImageDownloader: Operation {
 	let photoRecord: PhotoRecord
 	init (_ photoRecord: PhotoRecord) {
 		self.photoRecord = photoRecord	
