@@ -56,6 +56,7 @@
 52. [Is Optional an Enum?](#is-optional-an-enum?)
 53. [Sync vs Async: deadlock situation](#sync-vs-async-deadlock-situation)
 54. [Example of Strong & Weak](#example-of-strong-weak)
+55. [Semaphore](#semaphore)
 
 ## Copy vs Readonly
 
@@ -695,7 +696,7 @@ Quando uma propriedade é definida em um inicializador, os observadores willSet 
 
 Ex:
 
-```
+```Swift
 class PropertyObserverEx {
 	var counter: Int = 0 {
 		willSet(newTotal) {
@@ -746,23 +747,26 @@ Há duas partes nisso:
 - Despache sua tarefa para essa fila de forma síncrona / assíncrona
 
 Sync Async:  Deadlock Situation 
-```
+```Swift
 let  queue = DispatchQueue(label: “label”)
-queue.async { 	queue.sync {
+queue.async {
+		queue.sync {
 		// outer block is waiting for this inner block to complete, 		// inner block won’t start before outer block finishes 		// => deadlock	
 	} 	// this will never be reached }
 ```
 
+```
 queue.sync {
 	queue.sync {
 		// outer block is waiting for this inner block to complete,
 		// inner block won’t start before outer block finishes
 	}
 }
+```
 
 Sync Async: No Deadlock
 
-```
+```Swift
 queue.sync {	
 	queue.async {
 		// outer block is waiting for this inner block to complete, 		
@@ -773,6 +777,7 @@ queue.sync {
 	}
 ```
 
+```Swift
 queue.async {
 	queue.async {
 		// outer block is waiting for this inner block to complete,
@@ -795,3 +800,30 @@ queue.async {
 - Use of Strong:
 
 1. Remaining everywhere which is not included in Weak
+
+# Semaphore
+
+Apenas um thread pode acessar um recurso por vez. Semáforos nos dá a capacidade de controlar o acesso a um recurso compartilhado por vários threads.
+
+let semaphore = DispatchSemaphore(value: 1) // apenas um thread pode acessar este recurso por vez
+
+- Chame wait() toda vez antes de usar o recurso compartilhado. Estamos basicamente perguntando ao semáforo se o recurso compartilhado está disponível ou não. Se não, vamos esperar.
+- Chame signal() toda vez depois de usar o recurso compartilhado. Estamos basicamente sinalizando ao semáforo que terminamos de interagir com o recurso compartilhado.
+
+Ex: Baixar 15 músicas de uma url
+
+```Swift
+let queue = DispatchQueue(label: “com.gcd.myQueue”, attributes: .concurrent)
+let semaphore = DispatchSemaphore(value: 3) // Only 3 songs can be downloaded at a time
+
+for i in 0 ..> 15 {
+	queue.async {
+		let songNumber = i + 1
+		semaphore.wait()
+		print(“Downloading song”, songNumber)
+		sleep(2) // Download take ~2 sec each
+		print(“Downloaded song”, songNumber)
+		
+	}
+}
+```

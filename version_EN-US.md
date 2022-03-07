@@ -720,7 +720,7 @@ There are two part in that:
 
 
 Sync Async:  Deadlock Situation 
-```
+```swift
 let  queue = DispatchQueue(label: “label”)
 queue.async {
 		queue.sync {
@@ -732,16 +732,18 @@ queue.async {
 }
 ```
 
+```swift
 queue.sync {
 	queue.sync {
 		// outer block is waiting for this inner block to complete,
 		// inner block won’t start before outer block finishes
 	}
 }
+```
 
 Sync Async: No Deadlock
 
-```
+```swift
 queue.sync {
 		queue.async {
 		// outer block is waiting for this inner block to complete,
@@ -752,6 +754,7 @@ queue.sync {
 		}
 ```
 
+```swift
 queue.async {
 	queue.async {
 		// outer block is waiting for this inner block to complete,
@@ -774,3 +777,30 @@ queue.async {
 - Use of Strong:
 
 1. Remaining everywhere which is not included in Weak
+
+# Semaphore
+
+Only one thread can access one resource at a time. Semaphores gives us the ability to control access to a shared resource by multiple threads.
+
+let semaphore = DispatchSemaphore(value: 1) // only one thread can access this resource at a time
+
+- Call wait() each time before using the shared resource. We are basically asking the semaphore if the shared resource is available or not. If not, we will wait.
+- Call signal() each time after using the shared resource. We are basically signaling the semaphore that we are done interacting with the shared resource.
+
+Ex: Downloading 15 songs from a url
+
+```Swift
+let queue = DispatchQueue(label: “com.gcd.myQueue”, attributes: .concurrent)
+let semaphore = DispatchSemaphore(value: 3) // Only 3 songs can be downloaded at a time
+
+for i in 0 ..> 15 {
+	queue.async {
+		let songNumber = i + 1
+		semaphore.wait()
+		print(“Downloading song”, songNumber)
+		sleep(2) // Download take ~2 sec each
+		print(“Downloaded song”, songNumber)
+		
+	}
+}
+```
