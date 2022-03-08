@@ -554,7 +554,7 @@ KVC: Adiciona significa codificação de valor-chave. É um mecanismo pelo qual 
 KVO: significa observação de valor-chave e permite que um controlador ou classe observe alterações em um valor de propriedade. No KVO, um objeto pode pedir para ser notificado de alguma propriedade específica, sempre que essa propriedade mudar de valor, o observador é automaticamente notificado das mudanças. Você pode usar KVO em Swift, mas apenas para propriedades dinâmicas da subclasse NSObject.
 
 Ex:
-KVC: ```swift let robertLastName = self.value(forKey: “lastName”) ```
+KVC: `let robertLastName = self.value(forKey: “lastName”)`
 
 KVO:
 ```swift
@@ -650,17 +650,6 @@ As ABIs são importantes quando se trata de aplicativos que usam bibliotecas ext
 # What is viewDidLayoutSubviews?
 
 `viewDidLayoutSubviews` é chamado para notificar o controlador de visualização de que sua visualização acabou de apresentar suas subvisualizações.
-Em outras palavras, viewDidLayoutSubviews é chamado toda vez que a exibição é atualizada, girada ou alterada ou seus limites são alterados. A palavra-chave aqui é mudança de limites.
-
-# What is a loadView?
-
-Apenas substitua este método se você criar suas visualizações manualmente (ou seja, NÃO storyboard). loadView() cria e instancia o UIView.
-
-viewDidLoad() é chamado quando a visualização termina de carregar, enquanto loadView() é chamado quando a visualização começa a ser carregada.
-
-# What is viewDidLayoutSubviews?
-
-`viewDidLayoutSubviews` é chamado para notificar o controlador de visualização de que sua visualização acabou de apresentar suas subvisualizações.
 Em outras palavras, `viewDidLayoutSubviews` é chamado toda vez que a exibição é atualizada, girada ou alterada ou seus limites são alterados. A palavra-chave aqui é mudança de limites.
 
 # What is loadView?
@@ -716,7 +705,7 @@ newCounter.counter = 10
 newCounter.counter = 60
 
 Response -
- Total Counter is: 10
+Total Counter is: 10
 Newly Added Counter 10
 Total Counter is: 60
 Newly Added Counter 50
@@ -746,13 +735,17 @@ Há duas partes nisso:
 - Pegue uma fila em segundo plano (ex: CGD)
 - Despache sua tarefa para essa fila de forma síncrona / assíncrona
 
-Sync Async:  Deadlock Situation 
+Sync Async:  Deadlock Situation
 ```Swift
 let  queue = DispatchQueue(label: “label”)
 queue.async {
-		queue.sync {
-		// outer block is waiting for this inner block to complete, 		// inner block won’t start before outer block finishes 		// => deadlock	
-	} 	// this will never be reached }
+	queue.sync {
+	// outer block is waiting for this inner block to complete,
+	// inner block won’t start before outer block finishes
+	// => deadlock	
+	}
+	// this will never be reached
+	}
 ```
 
 ```
